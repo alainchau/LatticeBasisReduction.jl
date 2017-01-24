@@ -99,7 +99,7 @@ iteration 23 	 exchange 	 k=2
 ```
 
 """
-function LLL(x::Array{Float64, 2}, α::Float64; verbose=false::Bool)
+function LLL(x::Array{AbstractFloat, 2}, α::AbstractFloat; verbose=false::Bool)
 
     @assert 1/4 < α <= 1 ["Invalid value of α."]
 
@@ -172,8 +172,16 @@ function LLL(x::Array{Float64, 2}, α::Float64; verbose=false::Bool)
     return y
 end
 
-function LLL(x::Array{Float64, 2}, α::Int; verbose=false::Bool)
-    LLL(x, Float64(α), verbose=verbose)
+function LLL(x::Array{AbstractFloat, 2}, α::Int; verbose=false::Bool)
+    LLL(x, float(α), verbose=verbose)
+end
+
+function LLL(x::Array{Int, 2}, α::AbstractFloat; verbose=false::Bool)
+    LLL(float(x), α, verbose=verbose)
+end
+
+function LLL(x::Array{Int, 2}, α::Int; verbose=false::Bool)
+    LLL(float(x), float(α); verbose=verbose)
 end
 
 end
