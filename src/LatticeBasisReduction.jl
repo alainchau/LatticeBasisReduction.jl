@@ -184,4 +184,8 @@ function LLL(x::Array{Int, 2}, α::Int; verbose=false::Bool)
     LLL(float(x), float(α); verbose=verbose)
 end
 
+function LLL(x::Array{Int, 2}, α::Int; verbose=false::Bool)
+    LLL(round(float(x)), α::Int; verbose=verbose)
+end
+
 end
