@@ -3,51 +3,7 @@ module LatticeBasisReduction
 export gram_schmidt, LLL
 
 include("misc.jl")
-
-"""
-Return orthogonal basis and the Gram Schmidt coefficient matrix.
-
-# Example
-
-```julia
-julia> X = (Float64)[
-        [ 3  -1   5]
-        [-5   2  -1]
-        [-3   9   2]
-    ]
-
-julia> X_star, M = gram_schmidt(X)
-(
-[3.0 -1.0 5.0; -3.11429 1.37143 2.14286; 2.68728 6.5689 -0.298587],
-
-[1.0 0.0 0.0; -0.628571 1.0 0.0; -0.228571 1.60601 1.0])
-```
-"""
-function gram_schmidt(X)
-    # Assume the vectors are given as row vectors of X
-    # redo later since vectors in Julia are stored in column-major order.
-
-    # Copy so we don't modify the original array.
-    A = transpose(copy(X))
-
-    # Array with same shape as A but filled with zeros
-    A_star = zeros(A)
-
-    # Coefficient matrix
-    M = zeros(A)
-
-    n_cols = size(A)[2]
-    for i in 1:n_cols
-        A_star[:, i] = A[:, i]
-        for j in 1:i-1
-            μ = dot(A[:, i], A_star[:, j]) / dot(A_star[:, j], A_star[:, j])
-            M[j, i] = μ
-            A_star[:, i] -= (μ * A_star[:, j])
-        end
-        M[i,i] = 1
-    end
-    return transpose(A_star), transpose(M)
-end
+include("gram_schmidt.jl")
 
 """
     LLL(x::Array{Float64,2}, α::Float64; verbose=false::Bool)
@@ -68,29 +24,29 @@ julia> x = [[-2 7 7 -5]
   8  -9   6  -4
 
 julia> LLL(x, 1, verbose=true)
-iteration 1 	 exchange 	 k=2
-iteration 2 	 reduce 	 k=2 	 ℓ=1 	 [μ[k,l]] = 1.0
-iteration 3 	 reduce 	 k=3 	 ℓ=2 	 [μ[k,l]] = -1.0
-iteration 4 	 reduce 	 k=3 	 ℓ=1 	 [μ[k,l]] = -1.0
-iteration 5 	 exchange 	 k=4
-iteration 6 	 reduce 	 k=3 	 ℓ=2 	 [μ[k,l]] = -1.0
-iteration 7 	 exchange 	 k=3
-iteration 8 	 reduce 	 k=2 	 ℓ=1 	 [μ[k,l]] = 1.0
-iteration 9 	 reduce 	 k=3 	 ℓ=2 	 [μ[k,l]] = 1.0
-iteration 10 	 reduce 	 k=3 	 ℓ=1 	 [μ[k,l]] = -1.0
-iteration 11 	 reduce 	 k=4 	 ℓ=3 	 [μ[k,l]] = -1.0
-iteration 12 	 exchange 	 k=4
-iteration 13 	 reduce 	 k=3 	 ℓ=2 	 [μ[k,l]] = 1.0
-iteration 14 	 exchange 	 k=3
-iteration 15 	 exchange 	 k=2
-iteration 16 	 exchange 	 k=3
-iteration 17 	 reduce 	 k=2 	 ℓ=1 	 [μ[k,l]] = 1.0
-iteration 18 	 exchange 	 k=2
-iteration 19 	 exchange 	 k=4
-iteration 20 	 reduce 	 k=3 	 ℓ=2 	 [μ[k,l]] = 1.0
-iteration 21 	 exchange 	 k=3
-iteration 22 	 reduce 	 k=2 	 ℓ=1 	 [μ[k,l]] = -1.0
-iteration 23 	 exchange 	 k=2
+iteration 1      exchange    k=2
+iteration 2      reduce      k=2     ℓ=1     [μ[k,l]] = 1.0
+iteration 3      reduce      k=3     ℓ=2     [μ[k,l]] = -1.0
+iteration 4      reduce      k=3     ℓ=1     [μ[k,l]] = -1.0
+iteration 5      exchange    k=4
+iteration 6      reduce      k=3     ℓ=2     [μ[k,l]] = -1.0
+iteration 7      exchange    k=3
+iteration 8      reduce      k=2     ℓ=1     [μ[k,l]] = 1.0
+iteration 9      reduce      k=3     ℓ=2     [μ[k,l]] = 1.0
+iteration 10     reduce      k=3     ℓ=1     [μ[k,l]] = -1.0
+iteration 11     reduce      k=4     ℓ=3     [μ[k,l]] = -1.0
+iteration 12     exchange    k=4
+iteration 13     reduce      k=3     ℓ=2     [μ[k,l]] = 1.0
+iteration 14     exchange    k=3
+iteration 15     exchange    k=2
+iteration 16     exchange    k=3
+iteration 17     reduce      k=2     ℓ=1     [μ[k,l]] = 1.0
+iteration 18     exchange    k=2
+iteration 19     exchange    k=4
+iteration 20     reduce      k=3     ℓ=2     [μ[k,l]] = 1.0
+iteration 21     exchange    k=3
+iteration 22     reduce      k=2     ℓ=1     [μ[k,l]] = -1.0
+iteration 23     exchange    k=2
 4×4 Array{Float64,2}:
   2.0   3.0   1.0   1.0
   2.0   0.0  -2.0  -4.0
@@ -99,16 +55,15 @@ iteration 23 	 exchange 	 k=2
 ```
 
 """
-function LLL(x::Array{AbstractFloat, 2}, α::AbstractFloat; verbose=false::Bool)
+function LLL{T1<:AbstractFloat, T2<:AbstractFloat}(x::Array{T1, 2}, α::T2; verbose::Bool = false)
 
     @assert 1/4 < α <= 1 ["Invalid value of α."]
 
     y = copy(x)
     n = size(y)[2]
 
-    ystar, μ = gram_schmidt(y)
+    ystar, μ = gram_schmidt(y, ret_coef_mat=true)
 
-    # elementwise multiplication, followed by summing along rows
     gammax = sum(ystar .* ystar, 2)
 
     ##### Internal Methods ##########################################
@@ -121,7 +76,6 @@ function LLL(x::Array{AbstractFloat, 2}, α::AbstractFloat; verbose=false::Bool)
 
             y[k, :] -= round_ties_down(μ[k, ℓ]) * y[ℓ, :]
             for j in 1:ℓ-1
-                # rounding to nearest integer is default behavior
                 μ[k, j] -= round_ties_down(μ[k, ℓ]) * μ[ℓ, j]
             end
             μ[k, ℓ] -= round_ties_down(μ[k, ℓ])
@@ -172,20 +126,16 @@ function LLL(x::Array{AbstractFloat, 2}, α::AbstractFloat; verbose=false::Bool)
     return y
 end
 
-function LLL(x::Array{AbstractFloat, 2}, α::Int; verbose=false::Bool)
+function LLL{T1<:AbstractFloat, T2<:Integer}(x::Array{T1, 2}, α::T2; verbose::Bool = false)
     LLL(x, float(α), verbose=verbose)
 end
 
-function LLL(x::Array{Int, 2}, α::AbstractFloat; verbose=false::Bool)
+function LLL{T1<:Integer, T2<:AbstractFloat}(x::Array{T1, 2}, α::T2; verbose::Bool = false)
     LLL(float(x), α, verbose=verbose)
 end
 
-function LLL(x::Array{Int, 2}, α::Int; verbose=false::Bool)
+function LLL{T1<:Integer, T2<:Integer}(x::Array{T1, 2}, α::T2; verbose::Bool = false)
     LLL(float(x), float(α); verbose=verbose)
-end
-
-function LLL(x::Array{Int, 2}, α::Int; verbose=false::Bool)
-    LLL(round(float(x)), α::Int; verbose=verbose)
 end
 
 end
