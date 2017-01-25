@@ -1,20 +1,24 @@
 """
-Return orthogonal basis and the Gram Schmidt coefficient matrix.
+    gram_schmidt(A::Array[, ret_coef_mat::Bool])
+
+Return orthogonalized basis.
+Optionally returns the Gram-Schmidt coefficient matrix using the ret_coef_mat parameter.
 
 # Example
 
 ```julia
-julia> X = (Float64)[
+julia> x = [
         [ 3  -1   5]
         [-5   2  -1]
         [-3   9   2]
     ]
 
-julia> X_star, M = gram_schmidt(X)
-(
-[3.0 -1.0 5.0; -3.11429 1.37143 2.14286; 2.68728 6.5689 -0.298587],
+julia> gram_schmidt(x)
+3×3 Array{Float64,2}:
+  3.0      -1.0       5.0
+ -3.11429   1.37143   2.14286
+  2.68728   6.5689   -0.298587
 
-[1.0 0.0 0.0; -0.628571 1.0 0.0; -0.228571 1.60601 1.0])
 ```
 """
 function gram_schmidt{T<:AbstractFloat}(A::Array{T, 2}; ret_coef_mat::Bool = false)
