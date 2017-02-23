@@ -1,9 +1,10 @@
 module LatticeBasisReduction
 
-export gram_schmidt, LLL
+export gram_schmidt, LLL, diophantine, convergent_to_rational
 
 include("misc.jl")
 include("gram_schmidt.jl")
+include("diophantine.jl")
 
 """
     LLL(x::Array, α::Number[, verbose=Bool])
