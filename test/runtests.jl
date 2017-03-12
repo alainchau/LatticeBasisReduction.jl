@@ -2,11 +2,11 @@ using LatticeBasisReduction
 using Base.Test
 
 # Custom rounding
-@test round_ties_down(1.3) == 1
-@test round_ties_down(1.5) == 1
-@test round_ties_down(1.6) == 2
-@test round_ties_down(2) == 2
-@test round_ties_down(-0.5) == -1
+@test LatticeBasisReduction.round_ties_down(1.3) == 1
+@test LatticeBasisReduction.round_ties_down(1.5) == 1
+@test LatticeBasisReduction.round_ties_down(1.6) == 2
+@test LatticeBasisReduction.round_ties_down(2) == 2
+@test LatticeBasisReduction.round_ties_down(-0.5) == -1
 
 # Verify gram schmidt process with example 3.3 from Bremner
 eps = 1e-3
