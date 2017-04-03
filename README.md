@@ -1,5 +1,5 @@
 ## LatticeBasisReduction 
-[![Build Status](https://travis-ci.org/alainchau/MLFun.jl.svg?branch=master)](https://travis-ci.org/alainchau/LatticeBasisReduction.jl) [![Coverage Status](https://coveralls.io/repos/alainchau/LatticeBasisReduction.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/alainchau/LatticeBasisReduction.jl?branch=master) [![codecov.io](http://codecov.io/github/alainchau/LatticeBasisReduction.jl/coverage.svg?branch=master)](http://codecov.io/github/alainchau/LatticeBasisReduction.jl?branch=master)
+[![Build Status](https://travis-ci.org/alainchau/LatticeBasisReduction.jl.svg?branch=master)](https://travis-ci.org/alainchau/LatticeBasisReduction.jl) [![Coverage Status](https://coveralls.io/repos/alainchau/LatticeBasisReduction.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/alainchau/LatticeBasisReduction.jl?branch=master) [![codecov.io](http://codecov.io/github/alainchau/LatticeBasisReduction.jl/coverage.svg?branch=master)](http://codecov.io/github/alainchau/LatticeBasisReduction.jl?branch=master)
 ### How to Install/Use
 To install the package, enter the following in the Julia REPL:
 ```
