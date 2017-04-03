@@ -1,6 +1,8 @@
 using DataStructures
 
 """
+    stack_to_rational(st::Stack)
+
 Take a stack consisting of the convergents of the continued
 fraction expansion of a number and return the rational approximation.
 
@@ -37,6 +39,8 @@ end
 
 
 """
+    diophantine(x [, ε = 10.0-5])
+
 Return a rational approximation of x with an error tolerance of ε (default value of 10^-5).
 
 Using notation from Bremner (pg 146).

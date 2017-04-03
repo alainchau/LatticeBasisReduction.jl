@@ -19,6 +19,8 @@ x = [[-2 7 7 -5]
      [8 -9 6 -4]]
 
 @test_approx_eq_eps LLL(x, 1) [2 3 1 1; 2 0 -2 -4; -2 2 3 -3; 3 -2 6 -1] eps
+@test_approx_eq_eps LLL(x, 1.) [2 3 1 1; 2 0 -2 -4; -2 2 3 -3; 3 -2 6 -1] eps
+@test_approx_eq_eps LLL(Array{Float64}(x), 1) [2 3 1 1; 2 0 -2 -4; -2 2 3 -3; 3 -2 6 -1] eps
 
 # Verify diophantine approximation for a single number
 @test diophantine(float(π)) == 355//113
@@ -26,3 +28,11 @@ x = [[-2 7 7 -5]
 # Verify gauss for minimal basis of a lattice in R^2
 x = [-56, 43]; y = [95, -73]
 @test gauss(x,y) == ([1,1],[-1,2])
+@test gauss(y,x) == ([1,1],[-1,2])
+
+# Verify Simulataneous Diophantine Approximation
+nums, dem = sda(sqrt(2), sqrt(3), sqrt(5), sqrt(7), ε = eps)
+@test_approx_eq_eps nums[1]/dem sqrt(2) eps
+@test_approx_eq_eps nums[2]/dem sqrt(3) eps
+@test_approx_eq_eps nums[3]/dem sqrt(5) eps
+@test_approx_eq_eps nums[4]/dem sqrt(7) eps

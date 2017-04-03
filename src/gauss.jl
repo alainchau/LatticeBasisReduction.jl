@@ -1,7 +1,7 @@
 """
     gauss(x, y)
 
-Input: A basis x, y of a lattice L in R^n.
+Input: A basis {x,y} of a lattice L in R^n.
 Output: A minimal basis v1, v2 of the lattice L.
 
 The basis v1, v2 is minimal if
