@@ -55,7 +55,7 @@ iteration 23     exchange    k=2
   3.0  -2.0   6.0  -1.0
 ```
 
-## Simultaneous Diophatine Approximation
+## Simultaneous Diophantine Approximation
 Given a list of n distinct real numbers, the LLL algorithm allows one to find rational approximations using the same denominator.
 ```
     sda(x...; β = 2, ε = 1/100)
