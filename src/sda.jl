@@ -1,5 +1,5 @@
 """
-    sda(x...; β = 2, ε = 1/100)
+    sda(x...; beta = 2, eps = 1/100)
 
 Input: list of real distinct numbers.
 Output: list of numerators and a common denominator.
@@ -14,7 +14,9 @@ julia> sda(sqrt(2), sqrt(3), sqrt(5), sqrt(7))
 ([22253,27132,35112,41514],15708)
 ```
 """
-function sda(x...; β=2, ε=1/100)
+function sda(x...; beta=2, eps=1/100)
+    β = beta
+    ε = eps
     n = length(x)
     A = - eye(n + 1)
 
@@ -28,5 +30,10 @@ function sda(x...; β=2, ε=1/100)
 
     C = Array{Int}(C)
 
-    return C[1, 2:end], C[1, 1]
+    if sign(C[1,1]) == -1
+        return -C[1, 2:end], -C[1, 1]
+    else
+        return C[1, 2:end], C[1, 1]
+    end
+
 end
