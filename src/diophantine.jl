@@ -49,7 +49,7 @@ julia> diophantine(float(π))
 355//113
 """
 function diophantine(x, ε = 10.0^-5)
-    st = Stack(Int)
+    st = Stack{Int}()
 
     # step i=2
     γ = x

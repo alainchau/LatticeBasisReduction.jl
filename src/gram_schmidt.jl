@@ -21,15 +21,15 @@ julia> gram_schmidt(x)
 
 ```
 """
-function gram_schmidt{T<:AbstractFloat}(A::Array{T, 2}; ret_coef_mat::Bool = false)
+function gram_schmidt(A::Array{T, 2}; ret_coef_mat::Bool = false) where {T<:AbstractFloat}
     # Assume the vectors are given as row vectors of X
     # Maybe redo later since vectors in Julia are stored in column-major order.
 
     X = transpose(copy(A))
-    X_star = zeros(X)
+    X_star = zeros(size(X))
 
     # Coefficient matrix
-    μ = zeros(X)
+    μ = zeros(size(X))
 
     n_cols = size(X)[2]
     for i in 1:n_cols
@@ -49,6 +49,6 @@ function gram_schmidt{T<:AbstractFloat}(A::Array{T, 2}; ret_coef_mat::Bool = fal
     end
 end
 
-function gram_schmidt{T<:Integer}(A::Array{T, 2}; ret_coef_mat::Bool = false)
+function gram_schmidt(A::Array{T, 2}; ret_coef_mat::Bool = false) where {T<:Integer}
     gram_schmidt(float(A), ret_coef_mat=ret_coef_mat)
 end
