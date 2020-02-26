@@ -1,3 +1,5 @@
+using LinearAlgebra
+
 """
     sda(x...; beta = 2, eps = 1/100)
 
@@ -18,7 +20,7 @@ function sda(x...; beta=2, eps=1/100)
     β = beta
     ε = eps
     n = length(x)
-    A = - eye(n + 1)
+    A = Matrix(-1.0I, n+1, n+1)
 
     A[1,1] = β^(-n*(n+1)/4) * ε^(n+1)
 
